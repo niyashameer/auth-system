@@ -85,7 +85,7 @@ app.post("/login", async (req, res) => {
 });
 
 connectFunc().then(() => {
-	app.listen(3000, async () => {
+	app.listen(process.env.PORT || 3000, async () => {
 		console.log("Listening for requests...");
 	});
 });
