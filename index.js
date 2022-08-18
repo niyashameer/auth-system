@@ -39,7 +39,7 @@ app.post("/signup", async (req, res) => {
 				.db()
 				.collection("user-details")
                 .findOne({ email: req.body.email });
-            if (!response) {
+            if (response) {
                 throw { statusCode: 409, message: "User already exists." };
             }
 		const hash = bcrypt.hashSync(req.body.password, saltRounds);
