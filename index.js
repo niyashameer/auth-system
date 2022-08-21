@@ -1,22 +1,26 @@
 require("dotenv").config();
 const express = require("express");
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 const { MongoClient } = require("mongodb");
 const uri = process.env.MONGO_URI;
 const yup = require("yup");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const cors = require('cors')
 
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors())
+
+const saltRounds = 10;
 const client = new MongoClient(uri);
 
 let schema = yup.object().shape({
 	email: yup.string().email().required(),
 	password: yup.string().required(),
 });
-
 let collection;
+
 const connectFunc = async () => {
 	try {
 		await client.connect();
