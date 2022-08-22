@@ -69,17 +69,15 @@ app.post("/login", async (req, res) => {
 			.db()
 			.collection("user-details")
             .findOne({ email: req.body.email });
-            if (result != undefined) {
-                res.send("Response validated!");
-                const response = bcrypt.compareSync(req.body.password, result.password);
-                if (response) {
-                    res.send("Response validated!");    
-                } else {
-                    throw { statusCode: 401, message: "Invalid Password" };
-                }
-            } else {
+            if(result == undefined) {
                 throw { statusCode: 404, message: "User does not exist." };
-            } //generate token for frontend
+		}
+		const response = bcrypt.compareSync(req.body.password, result.password);
+        if (response) {
+            res.send("Response validated!");    
+        } else {
+            throw { statusCode: 401, message: "Invalid Password" };
+        }
 	} catch (err) {
 		console.error(err);
 		res
